@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import { AppContext } from './context/AppContext'
+import { ToastContainer} from 'react-toastify';
 
 const App = () => {
 
