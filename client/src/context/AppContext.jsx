@@ -1,6 +1,7 @@
  import { createContext, useEffect, useState } from "react";
  import { toast } from 'react-toastify'
  import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 
@@ -10,6 +11,19 @@ const AppContextProvider = (props) => {
   const [token , setToken] = useState(localStorage.getItem('token'))
 
   const [credit , setCredit] = useState(0)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser))
+      } catch (e) {
+        console.error('Failed to parse stored user', e)
+      }
+    }
+  }, [])
 
   const loadCreditsData = async () => {
     try {
@@ -26,8 +40,40 @@ const AppContextProvider = (props) => {
     }
   }
 
+  const generateImage = async (prompt) => {
+    if(!token){
+      toast.info('Please login or buy credits to generate images')
+      navigate('/buy')
+      return null
+    }
+
+    if(credit <= 0){
+      toast.info('No credits left — please buy more')
+      navigate('/buy')
+      return null
+    }
+
+    try {
+      const {data} = await axios.post(backendUrl + "/api/image/generate-image" , {prompt} , {headers : {token}} )
+      if (data.success){
+         loadCreditsData()
+         return data.resultImage
+      }
+      else{
+        toast.error(data.message)
+        loadCreditsData()
+        if(data.creditBalance === 0){
+           navigate('/buy')
+        }
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message)
+    }
+  }
+
   const logout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setToken(null)
     setUser(null)
     toast.success('Logged out successfully')
@@ -52,7 +98,8 @@ const AppContextProvider = (props) => {
     credit , 
     setCredit,
     loadCreditsData,
-    logout
+    logout,
+    generateImage
   }; 
 
   return (
