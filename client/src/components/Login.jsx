@@ -8,11 +8,12 @@ import { toast } from 'react-toastify';
 const Login = () => {
 
      const [state , setState] = useState('Login')
-     const {setShowLogin , backendUrl , setToken ,setUser} = useContext(AppContext)
+     const {setShowLogin , backendUrl , setToken ,setUser, setCredit} = useContext(AppContext)
 
      const [name,setName] = useState("")  
      const [email,setEmail] = useState("")  
      const [password,setPassword] = useState("")  
+     const [confirmPassword, setConfirmPassword] = useState("")
 
      const onSubmitHandler = async (e) => {
         e.preventDefault();
@@ -24,17 +25,43 @@ const Login = () => {
                if(data.success){
                    setToken(data.token)
                    setUser(data.user)
+                   if(data.user?.creditBalance !== undefined){
+                     setCredit(data.user.creditBalance)
+                   }
                    localStorage.setItem('token' , data.token)
                    setShowLogin(false)
+                   toast.success('Logged in successfully')
                 }
                 else{
                    toast.error(data.message)
                 }
 
+            }else{
+                if(password !== confirmPassword){
+                  toast.error('Passwords do not match')
+                  return
+                }
+
+                const {data} = await axios.post(backendUrl + '/api/user/register' , {name ,email , password})
+
+               if(data.success){
+                   setToken(data.token)
+                   setUser(data.user)
+                   if(data.user?.creditBalance !== undefined){
+                     setCredit(data.user.creditBalance)
+                   }
+                   localStorage.setItem('token' , data.token)
+                   setShowLogin(false)
+                   toast.success('Account created successfully')
+                }
+                else{
+                   toast.error(data.message)
+                }
             }
 
         } catch (error) {
-            
+            const message = error?.response?.data?.message || error?.response?.data || error?.message || 'Login failed'
+            toast.error(message)
         }
       }
 
@@ -61,26 +88,26 @@ const Login = () => {
                 <input onChange={e => setName(e.target.value)} value={name} type="text" placeholder='Full name ' required className='outline-none text-sm'/>
             </div>}
 
-            <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-4'>
-                <img src={assets.email_icon} alt=""  />
-                <input onChange={e => setEmail(e.target.value)} value={email}  type="email" placeholder='Email ' required className='outline-none text-sm'/>
+            <div className='border px-5 py-3 flex items-center gap-3 rounded-full mt-4'>
+                <img src={assets.email_icon} alt="" className='w-5 h-5' />
+                <input onChange={e => setEmail(e.target.value)} value={email}  type="email" placeholder='Email' required className='outline-none text-sm sm:text-base w-full'/>
             </div>
 
-            <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-4'>
-                <img src={assets.lock_icon} alt=""  />
-                <input onChange={e => setPassword(e.target.value)} value={password}  type="password" placeholder='Enter your Password' required className='outline-none text-sm'/>
+            <div className='border px-5 py-3 flex items-center gap-3 rounded-full mt-4'>
+                <img src={assets.lock_icon} alt="" className='w-5 h-5' />
+                <input onChange={e => setPassword(e.target.value)} value={password}  type="password" placeholder='Password' required className='outline-none text-sm sm:text-base w-full'/>
             </div>
 
-            {state !== 'Login' && <div className='border px-6 py-2 flex items-center gap-2 rounded-full mt-4'>
-                <img src={assets.lock_icon} alt=""  />
-                <input onChange={e => setPassword(e.target.value)} value={password}  type="password" placeholder='Confirm Password' required className='outline-none text-sm'/>
+            {state !== 'Login' && <div className='border px-5 py-3 flex items-center gap-3 rounded-full mt-4'>
+                <img src={assets.lock_icon} alt="" className='w-5 h-5' />
+                <input onChange={e => setConfirmPassword(e.target.value)} value={confirmPassword}  type="password" placeholder='Confirm Password' required className='outline-none text-sm sm:text-base w-full'/>
             </div>}
  
                 <p className='text-sm text-blue-600 my-4'>
                 Forgot password?
                </p>
 
-            <button className='bg-blue-600 w-full text-white py-2 rounded-full'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
+            <button className='bg-blue-600 w-full text-white py-2 rounded-full cursor-pointer'>{state === 'Login' ? 'Login' : 'Create Account'}</button>
 
             {state === 'Login' ? <p className='mt-5 text-center'>
                 Dont have an account?
