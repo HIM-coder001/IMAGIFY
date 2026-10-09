@@ -22,7 +22,7 @@ A full-stack AI image generation app built with React and Node.js. Users type a 
 - AI image generation from text prompts (1 credit per image)
 - Personal gallery — all past generations saved and browsable
 - Download any generated image
-- New users start with 5 free credits
+- New users start with 100 free credits
 - Buy more credits with M-Pesa (Basic / Advanced / Business plans)
 - Responsive design with animated UI
 

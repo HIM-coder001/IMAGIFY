@@ -27,20 +27,18 @@ const AppContextProvider = (props) => {
 
   const loadCreditsData = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/user/credits', { headers: { token } })
+      const { data } = await axios.post(backendUrl + '/api/user/credits', {}, { headers: { token } })
       if (data.success) {
         setCredit(data.credits)
         setUser(data.user)
       } else {
-        // Token invalid or expired — clear session silently
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         setToken(null)
         setUser(null)
       }
     } catch (error) {
-      // Only show a toast for genuine server errors, not auth failures on load
-      if (error.response?.status !== 401 && error.response?.status !== 404) {
+      if (error.response?.status !== 401) {
         console.error('Failed to load credits:', error.message)
       }
     }
