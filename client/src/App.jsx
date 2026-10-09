@@ -16,17 +16,21 @@ const App = () => {
   const {showLogin} = useContext(AppContext)
 
   return (
-    <div className='px-4 sm:px-10 md:px-14 lg:px-28 min-h-screen bg-linear-to-b from-teal-50 to-orange-50'>
+    <div className='min-h-screen bg-linear-to-b from-teal-50 to-orange-50'>
       <ToastContainer position='top-center' autoClose={3000} />
-      <Navbar />
+      <div className='sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 sm:px-10 md:px-14 lg:px-28'>
+        <Navbar />
+      </div>
       {showLogin && <Login />}
+      <div className='px-4 sm:px-10 md:px-14 lg:px-28'>
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/result' element={<Result />} />
         <Route path='/buy' element={<BuyCredit />} />
         <Route path='/gallery' element={<Gallery />} />
-      </Routes> 
+      </Routes>
       <Footer />
+      </div>
     </div>
   )
 }
