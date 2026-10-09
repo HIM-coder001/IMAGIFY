@@ -23,14 +23,21 @@ export const registerUser = async (req, res) => {
             password: hashedPassword
         });
 
+        const token = jwt.sign(
+            { id: user._id },
+            process.env.JWT_SECRET
+        );
+
         return res.status(201).json({
             success: true,
             message: 'Account created successfully',
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
-            }
+                email: user.email,
+                creditBalance: user.creditBalance
+            },
+            token
         });
     } catch (error) {
         console.log(error);
@@ -74,6 +81,7 @@ export const loginUser = async (req, res) => {
                 id: user._id,
                 name:user.name,
                 email:user.email,
+                creditBalance: user.creditBalance
             },
             token
         })
@@ -99,11 +107,14 @@ export const userCredits = async (req ,res) => {
         const {userId} = req.body
 
         const user = await UserModel.findById(userId)
-        res.status(404).json({
+        res.status(200).json({
             success: true,
             credits: user.creditBalance,
             user: {
-                name: user.name
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                creditBalance: user.creditBalance
             }
         })
        
