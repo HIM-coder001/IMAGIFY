@@ -40,11 +40,7 @@ const BuyCredit = () => {
     try {
       const { data } = await axios.post(
         backendUrl + '/api/mpesa/stkpush',
-        {
-          amount: selectedPlan.price,
-          phone: formattedPhone,
-          userId: user.id
-        },
+        { amount: selectedPlan.price, phone: formattedPhone, userId: user.id },
         { headers: { token } }
       )
 
@@ -52,9 +48,7 @@ const BuyCredit = () => {
         toast.success('STK push sent. Check your phone to complete payment.')
         setShowPhoneModal(false)
         setPhone('')
-        setTimeout(() => {
-          loadCreditsData()
-        }, 15000)
+        setTimeout(() => { loadCreditsData() }, 15000)
       } else {
         toast.error(data.message || 'Payment initiation failed')
       }
@@ -73,31 +67,41 @@ const BuyCredit = () => {
       viewport={{ once: true }}
       className='min-h-[80vh] text-center pt-14 mb-10'
     >
-      <button className='border border-gray-400 px-10 py-2 rounded-full mb-6'>Our Plans</button>
-      <h1 className='text-center text-3xl font-medium mb-6 sm:mb-10'>Choose a plan</h1>
+      <span className='border border-gray-400 px-10 py-2 rounded-full mb-6 inline-block text-sm text-gray-500'>
+        Our Plans
+      </span>
+      <h1 className='text-center text-3xl font-medium mt-4 mb-6 sm:mb-10'>Choose a plan</h1>
 
       <div className='flex flex-wrap justify-center gap-6 text-left'>
-        {plans.map((item, index) => (
-          <div
-            key={index}
-            className='bg-white drop-shadow-sm border rounded-lg py-12 px-8 text-gray-600 hover:scale-105 transition-all duration-500'
-          >
-            <img src={assets.logo_icon} alt="" />
-            <p className='mt-3 mb-1 font-semibold'>{item.id}</p>
-            <p className='text-sm'>{item.desc}</p>
-            <p className='mt-6'>
-              <span className='text-3xl font-medium'>KSH {item.price}</span>
-              /{item.credits} credits
-            </p>
-            <button
-              onClick={() => handlePlanClick(item)}
-              disabled={loadingPlan === item.id}
-              className='w-full bg-gray-800 text-white mt-8 text-sm rounded-md py-2.5 min-w-52 cursor-pointer disabled:opacity-60'
+        {plans.map((item, index) => {
+          const isPopular = item.id === 'Advanced'
+          return (
+            <div
+              key={index}
+              className={`relative bg-white drop-shadow-sm border rounded-lg py-12 px-8 text-gray-600 hover:scale-105 hover:border-blue-400 hover:shadow-md transition-all duration-500 ${isPopular ? 'border-blue-400 shadow-md' : ''}`}
             >
-              {loadingPlan === item.id ? 'Processing...' : user ? 'Purchase' : 'Get Started'}
-            </button>
-          </div>
-        ))}
+              {isPopular && (
+                <span className='absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-500 text-white text-xs px-4 py-1 rounded-full'>
+                  Most Popular
+                </span>
+              )}
+              <img src={assets.logo_icon} alt='' />
+              <p className='mt-3 mb-1 font-semibold'>{item.id}</p>
+              <p className='text-sm'>{item.desc}</p>
+              <p className='mt-6'>
+                <span className='text-3xl font-medium'>KSH {item.price}</span>
+                <span className='text-sm ml-1'>/ {item.credits} credits</span>
+              </p>
+              <button
+                onClick={() => handlePlanClick(item)}
+                disabled={loadingPlan === item.id}
+                className={`w-full mt-8 text-sm rounded-md py-2.5 min-w-52 cursor-pointer disabled:opacity-60 transition-colors ${isPopular ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-800 hover:bg-gray-900 text-white'}`}
+              >
+                {loadingPlan === item.id ? 'Processing...' : user ? 'Purchase' : 'Get Started'}
+              </button>
+            </div>
+          )
+        })}
       </div>
 
       {showPhoneModal && (
@@ -119,21 +123,21 @@ const BuyCredit = () => {
               onChange={(e) => setPhone(e.target.value)}
               placeholder='e.g. 0712345678'
               required
-              className='border rounded-full px-4 py-2 w-full text-sm outline-none mb-4'
+              className='border rounded-full px-4 py-2 w-full text-sm outline-none mb-4 focus:border-blue-400 transition-colors'
             />
             <button
               type='submit'
               disabled={loadingPlan !== null}
-              className='w-full bg-gray-800 text-white py-2.5 rounded-full text-sm cursor-pointer disabled:opacity-60'
+              className='w-full bg-gray-800 text-white py-2.5 rounded-full text-sm cursor-pointer disabled:opacity-60 hover:bg-gray-900 transition-colors'
             >
               {loadingPlan ? 'Sending...' : 'Pay Now'}
             </button>
             <button
               type='button'
               onClick={() => { setShowPhoneModal(false); setPhone('') }}
-              className='absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-light cursor-pointer'
+              className='absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl leading-none cursor-pointer'
             >
-              x
+              &times;
             </button>
           </form>
         </div>
