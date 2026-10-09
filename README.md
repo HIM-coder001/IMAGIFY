@@ -1,6 +1,12 @@
 # Imagify
 
-A full-stack AI image generation app built with React and Node.js. Users type a text prompt, and the app generates a high-quality image using the Clipdrop API. Credits are purchased via M-Pesa STK push and tied to each user account.
+A full-stack AI image generation app built with React and Node.js. Users type a text prompt, the app generates a high-quality image using the Clipdrop API, and all generated images are saved to a personal gallery. Credits are purchased via M-Pesa STK push.
+
+## Demo
+
+![Imagify Demo](./demo.gif)
+
+> Record a short screen capture of the app and save it as `demo.gif` in the project root. Tools: [ScreenToGif](https://www.screentogif.com/) (Windows) or [LICEcap](https://www.cockos.com/licecap/).
 
 ## Tech Stack
 
@@ -13,10 +19,11 @@ A full-stack AI image generation app built with React and Node.js. Users type a 
 ## Features
 
 - User registration and login with JWT authentication
-- AI image generation from text prompts (costs 1 credit per image)
+- AI image generation from text prompts (1 credit per image)
+- Personal gallery — all past generations saved and browsable
+- Download any generated image
 - New users start with 5 free credits
 - Buy more credits with M-Pesa (Basic / Advanced / Business plans)
-- Download generated images directly from the browser
 - Responsive design with animated UI
 
 ## Project Structure
