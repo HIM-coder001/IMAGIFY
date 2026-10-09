@@ -5,6 +5,6 @@ import userAuth from '../middlewares/auth.js'
 const imageRouter = express.Router()
 
 imageRouter.post('/generate-image', userAuth, generateImage)
-imageRouter.get('/gallery', userAuth, getUserGallery)
+imageRouter.post('/gallery', userAuth, getUserGallery)
 
 export default imageRouter

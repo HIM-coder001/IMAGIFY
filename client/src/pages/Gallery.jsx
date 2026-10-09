@@ -21,7 +21,7 @@ const Gallery = () => {
 
   const fetchGallery = async () => {
     try {
-      const { data } = await axios.get(backendUrl + '/api/image/gallery', {
+      const { data } = await axios.post(backendUrl + '/api/image/gallery', {}, {
         headers: { token }
       })
       if (data.success) {
