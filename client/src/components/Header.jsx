@@ -35,11 +35,7 @@ const Header = () => {
             <img src={assets.star_icon} alt="" />
         </motion.div>
 
-        <motion.h1 className='text-4xl max-w-75 sm:text-7xl sm:max-w-147.5 mx-auto my-2 text-center'>Turn text to <span className='text-blue-600'
-        initial ={{opacity:0}}
-        transition={{duration:2,delay:0.4}}
-        animate={{opacity:1}}
-        >image</span>  in seconds.</motion.h1>
+        <motion.h1 className='text-4xl max-w-75 sm:text-7xl sm:max-w-147.5 mx-auto my-2 text-center'>Turn text to <span className='text-blue-600'>image</span> in seconds.</motion.h1>
 
         <motion.p className='text-center max-w-xl mx-auto mt-5'
         initial ={{opacity:0 ,y:20}}
@@ -53,7 +49,7 @@ const Header = () => {
         initial={{opacity:0}}
         animate={{opacity:1}}
         transition={{default:{duration:0.5} , opacity:{delay:0.8} ,duration:1}}
-        >Genarate Images 
+        >Generate Images 
             <img className='h-6' src={assets.star_group} alt="" />
         </motion.button>
 
@@ -75,7 +71,7 @@ const Header = () => {
         initial ={{opacity:0}}
         transition={{duration:1.2,delay:0.8}}
         animate={{opacity:1}}
-        >Genarated images from imagify</motion.p>
+        >Generated images from imagify</motion.p>
       
     </motion.div>
   )
