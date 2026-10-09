@@ -18,6 +18,7 @@ const Navbar = () => {
       <div>
         {user ? 
         <div className='flex items-center gap-3'>
+           <button onClick={()=>navigate("/gallery")} className='text-sm text-gray-600 cursor-pointer hidden sm:block hover:text-black transition-colors'>Gallery</button>
            <button onClick={()=>navigate("/buy")} className='flex items-center gap-2 bg-blue-100 px-4 sm:px-6 py-2 rounded-full hover:scale-105 transition-all duration-300'>
                <img className='w-5' src={assets.credit_star} alt="" />
                <p className='text-xs sm:text-sm font-medium text-gray-600'>Credits: {credit ?? 0}</p>

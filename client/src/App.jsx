@@ -1,14 +1,15 @@
 import React, { useContext } from 'react'
-import { Routes ,Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Result from './pages/Result'
 import BuyCredit from './pages/BuyCredit'
+import Gallery from './pages/Gallery'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Login from './components/Login'
 import { AppContext } from './context/AppContext'
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
 
@@ -21,8 +22,9 @@ const App = () => {
       {showLogin && <Login />}
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/result' element={ <Result />} />
-        <Route path='/buy' element={<BuyCredit />} />     
+        <Route path='/result' element={<Result />} />
+        <Route path='/buy' element={<BuyCredit />} />
+        <Route path='/gallery' element={<Gallery />} />
       </Routes> 
       <Footer />
     </div>
