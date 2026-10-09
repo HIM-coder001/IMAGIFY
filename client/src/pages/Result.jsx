@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 import { assets } from '../assets/assets'
 import { motion } from 'framer-motion'
 import { AppContext } from '../context/AppContext'
@@ -16,6 +16,18 @@ const Result = () => {
 
   const { generateImage, token, credit } = useContext(AppContext)
   const navigate = useNavigate()
+  const textareaRef = useRef(null)
+
+  const autoResize = () => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = el.scrollHeight + 'px'
+  }
+
+  useEffect(() => {
+    autoResize()
+  }, [input])
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -77,24 +89,33 @@ const Result = () => {
       </div>
 
       <form onSubmit={onSubmitHandler} className='w-full max-w-xl mt-10'>
-        <div className='flex bg-neutral-500 text-white text-sm p-0.5 rounded-full'>
-          <input
-            onChange={e => setInput(e.target.value)}
+        <div className='flex items-end bg-neutral-500 text-white text-sm p-2 rounded-2xl gap-2'>
+          <textarea
+            ref={textareaRef}
+            onChange={e => { setInput(e.target.value); autoResize() }}
             value={input}
-            type='text'
             maxLength={MAX_CHARS}
-            placeholder='Describe what you want to generate'
-            className='flex-1 bg-transparent outline-none ml-6 max-sm:w-20 placeholder-color'
+            rows={2}
+            placeholder='Describe what you want to generate...'
+            className='flex-1 bg-transparent outline-none ml-4 resize-none placeholder-color leading-relaxed py-1 max-sm:w-20'
+            style={{ minHeight: '3rem', maxHeight: '12rem' }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                onSubmitHandler(e)
+              }
+            }}
           />
           <button
             type='submit'
             disabled={loading}
-            className='bg-zinc-900 px-10 sm:px-16 py-3 rounded-full text-white cursor-pointer disabled:opacity-60 transition-opacity'
+            className='bg-zinc-900 px-8 sm:px-12 py-2.5 rounded-xl text-white cursor-pointer disabled:opacity-60 transition-opacity flex-shrink-0 self-end'
           >
             {loading ? 'Generating...' : 'Generate'}
           </button>
         </div>
-        <div className='flex justify-end mt-1 pr-1'>
+        <div className='flex justify-between mt-1.5 px-1'>
+          <p className='text-xs text-gray-400'>Shift + Enter for new line</p>
           <p className={`text-xs ${input.length > MAX_CHARS * 0.9 ? 'text-red-400' : 'text-gray-400'}`}>
             {input.length}/{MAX_CHARS}
           </p>
