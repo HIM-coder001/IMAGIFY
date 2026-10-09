@@ -31,10 +31,18 @@ const AppContextProvider = (props) => {
       if (data.success) {
         setCredit(data.credits)
         setUser(data.user)
+      } else {
+        // Token invalid or expired — clear session silently
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        setToken(null)
+        setUser(null)
       }
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      // Only show a toast for genuine server errors, not auth failures on load
+      if (error.response?.status !== 401 && error.response?.status !== 404) {
+        console.error('Failed to load credits:', error.message)
+      }
     }
   }
 
