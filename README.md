@@ -92,6 +92,8 @@ Create `client/.env`:
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
+For production builds, `client/.env.production` sets `VITE_BACKEND_URL` to the deployed Render API. If you configure this variable in Vercel instead, use the same Render URL and redeploy after changing it.
+
 ```bash
 npm run dev
 ```
