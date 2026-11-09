@@ -18,7 +18,7 @@ A full-stack AI image generation app built with React and Node.js. Users type a 
 
 ## Features
 
-- User registration and login with JWT authentication
+- User registration and login with JWT authentication; new passwords must be at least 8 characters
 - AI image generation from text prompts (1 credit per image)
 - Personal gallery — all past generations saved and browsable
 - Download any generated image

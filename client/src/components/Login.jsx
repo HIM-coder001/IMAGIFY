@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import { AppContext } from '../context/AppContext'
 import { motion } from 'framer-motion'
@@ -122,6 +122,7 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
             required
+            minLength={state === 'Login' ? undefined : 8}
             className='outline-none text-sm w-full'
           />
           <button
@@ -135,6 +136,10 @@ const Login = () => {
         </div>
 
         {state !== 'Login' && (
+          <p className='text-xs ml-5 mt-2'>Password must be at least 8 characters</p>
+        )}
+
+        {state !== 'Login' && (
           <div className='border px-5 py-3 flex items-center gap-3 rounded-full mt-4'>
             <img src={assets.lock_icon} alt='' className='w-5 h-5' />
             <input
@@ -143,6 +148,7 @@ const Login = () => {
               type={showConfirmPassword ? 'text' : 'password'}
               placeholder='Confirm Password'
               required
+              minLength={8}
               className='outline-none text-sm w-full'
             />
             <button
